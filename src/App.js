@@ -6,7 +6,10 @@ import { TodosFlter } from './components/TodosFilter';
 function App() {
   const [todos, setTodos] = useState([]);
   const [completed, setCompleted] = useState(false);
-  // const [activeTodos, setActiveTodos] = useState([]);
+  const [filteredTodos, setFilteredTodos] = useState('All');
+
+  const completedTodos = todos.filter(todo => todo.completed === true);
+  const activeTodos = todos.filter(todo => todo.completed === false);
 
   const updateTodo = (id, isCompleted) => {
     const todoToUpdate = todos.map((todo) => {
@@ -16,6 +19,8 @@ function App() {
           completed: !isCompleted,
         };
       }
+
+      setFilteredTodos('All');
 
       return { ...todo };
     });
@@ -41,6 +46,12 @@ function App() {
     setCompleted(!completed);
   };
 
+  const removeCompleted = () => {
+    const remove = todos.filter(todo => todo.completed === false);
+
+    setTodos(remove);
+  };
+
   return (
     <section className="todoapp">
       <header className="header">
@@ -61,11 +72,35 @@ function App() {
         />
         <label htmlFor="toggle-all">Mark all as complete</label>
 
-        <TodoList
-          todos={todos}
-          removeTodo={removeTodo}
-          updateTodo={updateTodo}
-        />
+        {
+          filteredTodos === 'Completed' && (
+            <TodoList
+              todos={completedTodos}
+              removeTodo={removeTodo}
+              updateTodo={updateTodo}
+            />
+          )
+        }
+
+        {
+          filteredTodos === 'Active' && (
+            <TodoList
+              todos={activeTodos}
+              removeTodo={removeTodo}
+              updateTodo={updateTodo}
+            />
+          )
+        }
+
+        {
+          filteredTodos === 'All' && (
+            <TodoList
+              todos={todos}
+              removeTodo={removeTodo}
+              updateTodo={updateTodo}
+            />
+          )
+        }
       </section>
 
       <footer className="footer">
@@ -75,9 +110,13 @@ function App() {
           items left
         </span>
 
-        <TodosFlter todos={todos} setTodos={setTodos} />
-        <button type="button" className="clear-completed">
-          Clear completed
+        <TodosFlter setFilteredTodos={setFilteredTodos} />
+        <button
+          type="button"
+          className="clear-completed"
+          onClick={removeCompleted}
+        >
+          {`Clear completed (${completedTodos.length})`}
         </button>
       </footer>
     </section>

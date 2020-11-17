@@ -1,19 +1,55 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export const TodosFlter = () => (
-// const activeTodos = todos.filter(todo => todo.completed === false);
-// const completedTodos = todos.filter(todo => todo.completed === true);
-  <ul className="filters">
-    <li>
-      <a href="#/" className="selected">All</a>
-    </li>
+export const TodosFlter = ({ setFilteredTodos }) => {
+  const handlerChange = (event) => {
+    const { name } = event.target;
 
-    <li>
-      <a href="#/active">Active</a>
-    </li>
+    if (name === 'All') {
+      setFilteredTodos(name);
+    } else if (name === 'Active') {
+      setFilteredTodos(name);
+    } else if (name === 'Completed') {
+      setFilteredTodos(name);
+    }
+  };
 
-    <li>
-      <a href="#/completed">Completed</a>
-    </li>
-  </ul>
-);
+  return (
+    <ul className="filters">
+      <li>
+        <a
+          href="#/"
+          className="selected"
+          onClick={handlerChange}
+          name="All"
+        >
+          All
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="#/active"
+          onClick={handlerChange}
+          name="Active"
+        >
+          Active
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="#/completed"
+          onClick={handlerChange}
+          name="Completed"
+        >
+          Completed
+        </a>
+      </li>
+    </ul>
+  );
+};
+
+TodosFlter.propTypes = {
+  setFilteredTodos: PropTypes.func.isRequired,
+};
