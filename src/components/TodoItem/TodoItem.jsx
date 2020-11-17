@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import classNames from 'classnames';
 
-export const TodoItem = ({ title, completed, setCompleted }) => {
+export const TodoItem = ({ title, completed, id, removeTodo, updateTodo }) => {
   const handleChange = () => {
-    setCompleted(!completed);
+    updateTodo(id, completed);
+  };
+
+  const handleRemove = () => {
+    removeTodo(id);
   };
 
   return (
@@ -13,10 +16,15 @@ export const TodoItem = ({ title, completed, setCompleted }) => {
         <input
           type="checkbox"
           className="toggle"
+          checked={completed}
           onChange={handleChange}
         />
         <label className={completed ? 'completed' : null}>{title}</label>
-        <button type="button" className="destroy" />
+        <button
+          type="button"
+          className="destroy"
+          onClick={handleRemove}
+        />
       </div>
       <input type="text" className="edit" />
     </li>
@@ -26,5 +34,7 @@ export const TodoItem = ({ title, completed, setCompleted }) => {
 TodoItem.propTypes = {
   title: PropTypes.string.isRequired,
   completed: PropTypes.bool.isRequired,
-  setCompleted: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
+  removeTodo: PropTypes.func.isRequired,
+  updateTodo: PropTypes.func.isRequired,
 };
